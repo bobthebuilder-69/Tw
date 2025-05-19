@@ -5,20 +5,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Use Ubuntu 22.04 for better compatibility
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up environment
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git wget curl python3 zip unzip bc bison build-essential \
-            gcc-multilib g++-multilib libxml2-utils zlib1g-dev libc6-dev-i386 \
-            libncurses5 libncurses5-dev lib32z1-dev liblz4-tool libssl-dev \
-            libtinfo5 libtinfo-dev libstdc++6 nano lzop pngcrush rsync schedtool \
-            squashfs-tools repo ca-certificates ccache openjdk-8-jdk
+          sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
+            gcc-multilib g++-multilib libc6-dev-i386 libncurses5-dev x11proto-core-dev \
+            libx11-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig \
+            libssl-dev bc lib32ncurses5-dev lib32z1 liblz4-tool libxml2-utils \
+            pngcrush schedtool libtinfo-dev openjdk-8-jdk ccache
 
       - name: Set up Repo
         run: |
@@ -37,7 +37,7 @@ jobs:
           cd ~/twrp
           git clone https://github.com/TeamWin/android_vendor_twrp.git vendor/twrp
 
-      - name: Start Build
+      - name: Build TWRP
         run: |
           cd ~/twrp
           source build/envsetup.sh
@@ -49,3 +49,4 @@ jobs:
         with:
           name: twrp-j7xlte
           path: ~/twrp/out/target/product/j7xlte/recovery.img
+          
